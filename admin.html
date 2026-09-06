@@ -1,1 +1,39 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetim - BÜYÜK ÜSTAT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background-color: #110000; color: #ff4444; }
+        .container { border-color: #ff0000; box-shadow: 0 0 20px rgba(255,0,0,0.3); }
+        h1, h3 { color: #ff0000; border-bottom-color: #ff0000; }
+        .modul { border-color: #ff0000; background: #220000; }
+        input { border-color: #ff0000; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BÜYÜK ÜSTAT PANELİ 💠</h1>
+        
+        <div class="modul">
+            <h3>Oyuncuya Müdahale</h3>
+            <input type="text" id="hedef-oyuncu" placeholder="Hedef Oyuncunun Adı">
+            <input type="number" id="gonderilecek-miktar" placeholder="Kredi Miktarı (Silmek için - koy)">
+            <button class="btn-red" onclick="paraMudehalesi()">Kredi Gönder / Sil</button>
+            <button class="btn-red" onclick="oyuncuyuSifirla()">Oyuncunun Tüm Mallarına El Koy</button>
+        </div>
 
+        <div class="modul">
+            <h3>Ekonomiye Müdahale</h3>
+            <button class="btn-red" onclick="piyasayiCokert()">Piyasayı Çökert (Fiyatları Sıfırla)</button>
+        </div>
+
+        <button onclick="window.location.href='index.html'">Karargaha Dön</button>
+    </div>
+
+    <script type="module" src="js/firebase.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
