@@ -23,7 +23,7 @@ window.authSekme = function(sekme) {
     document.querySelectorAll("#login-screen .sekme-btn").forEach(b => b.classList.remove("aktif"));
     
     document.getElementById("form-" + sekme).classList.remove("gizli");
-    event.target.classList.add("aktif");
+    if(event && event.target) event.target.classList.add("aktif");
 }
 
 window.sistemeKayit = function() {
@@ -46,7 +46,6 @@ window.sistemeKayit = function() {
         if (snapshot.exists()) {
             alert("Bu Kullanıcı Adı zaten alınmış! Başka bir isim seç.");
         } else {
-            // Firebase Auth ile kayıt denemesi
             window.createUserWithEmailAndPassword(window.auth, email, pass)
             .then((userCredential) => {
                 let baslangicParasi = (kAdi === "BÜYÜK ÜSTAT") ? 9999999 : 500;
@@ -68,7 +67,6 @@ window.sistemeKayit = function() {
 
             })
             .catch((error) => {
-                // HEY! Artık hata gizlenmeyecek, doğrudan ekranda yazacak!
                 alert("Firebase Auth Hatası: " + error.message);
             });
         }
@@ -99,7 +97,7 @@ window.sistemeGiris = function() {
                     canliVeriDinle();
                     arayuzuAc();
                 } else {
-                    alert("Yetki Hatası: Bu e-posta ile eşleşen bir ajan profili bulunamadı.");
+                    alert("Yetki Hatası: Bu e-posta ile eşleşen ajan profili yok.");
                 }
             }
         });
@@ -150,9 +148,9 @@ function arayuzuAc() {
 window.sekmeDegistir = function(sekmeAdi) {
     document.getElementById("sekme-karargah").classList.add("gizli");
     document.getElementById("sekme-pazar").classList.add("gizli");
-    document.querySelectorAll(".sekme-btn").files = document.querySelectorAll(".sekme-btn").forEach(btn => btn.classList.remove("aktif"));
+    document.querySelectorAll(".sekme-btn").forEach(btn => btn.classList.remove("aktif"));
     document.getElementById("sekme-" + sekmeAdi).classList.remove("gizli");
-    event.target.classList.add("aktif");
+    if(event && event.target) event.target.classList.add("aktif");
 }
 
 window.uretimYap = function() {
@@ -169,3 +167,13 @@ window.uretimYap = function() {
     yeniEnvanter[uUrun] += uMik;
     window.update(userRef, { envanter: yeniEnvanter });
 }
+
+// Butonun tepki vermemesini %100 kaldıran güvenli tetikleyici
+document.addEventListener("DOMContentLoaded", function() {
+    const kayitBtn = document.getElementById("kayit-btn");
+    if(kayitBtn) {
+        kayitBtn.addEventListener("click", function() {
+            window.sistemeKayit();
+        });
+    }
+});
