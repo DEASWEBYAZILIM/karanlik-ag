@@ -1,1 +1,88 @@
-test
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Ağı - Karargah</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>KARANLIK AĞ</h1>
+        
+        <!-- GİRİŞ & MESLEK SEÇİM EKRANI -->
+        <div id="login-screen" class="modul">
+            <h3>Ağa Bağlan</h3>
+            <input type="text" id="username" placeholder="Kullanıcı Adı Girin">
+            
+            <div id="meslek-secimi" class="gizli">
+                <p class="meslek-uyari">Sistemde yenisin. Hayatta kalmak için bir rol seçmelisin!</p>
+                <select id="meslek">
+                    <option value="madenci">Veri Madencisi (Kripto Üretir, Enerji Harcar)</option>
+                    <option value="teknisyen">Enerji Teknisyeni (Enerji Üretir, Kimyasal Harcar)</option>
+                    <option value="kimyager">Biyokimyager (Kimyasal Üretir, Kripto Harcar)</option>
+                </select>
+            </div>
+            
+            <button onclick="sistemeGiris()">Bağlantıyı Kur</button>
+        </div>
+
+        <!-- ANA OYUN EKRANI -->
+        <div id="game-screen" class="gizli">
+            <div class="sekme-menu">
+                <button class="sekme-btn aktif" onclick="sekmeDegistir('karargah')">Karargah (Üretim)</button>
+                <button class="sekme-btn" onclick="sekmeDegistir('pazar')">Karaborsa (Ticaret)</button>
+            </div>
+
+            <!-- KARARGAH SEKMESİ -->
+            <div id="sekme-karargah" class="modul">
+                <h2 id="oyuncu-adi">Ajan</h2>
+                <p>Meslek: <span id="oyuncu-meslek" style="color:#00ffcc">...</span></p>
+                <p>Bakiye: <strong id="oyuncu-bakiye" style="color:#ffd700">0</strong> Kredi</p>
+                
+                <h3>Depo</h3>
+                <div class="flex-row">
+                    <div class="kutu">Kripto<br><strong id="inv-kripto">0</strong></div>
+                    <div class="kutu">Enerji<br><strong id="inv-enerji">0</strong></div>
+                    <div class="kutu">Kimyasal<br><strong id="inv-kimyasal">0</strong></div>
+                </div>
+
+                <h3>Üretim Tesisi</h3>
+                <p id="uretim-bilgi" class="meslek-uyari">...</p>
+                <button onclick="uretimYap()">ÜRETİMİ BAŞLAT</button>
+            </div>
+
+            <!-- PAZAR SEKMESİ -->
+            <div id="sekme-pazar" class="modul gizli">
+                <h2>KARABORSA</h2>
+                <p class="meslek-uyari">Fiyatlar oyuncuların alım-satımına göre anlık değişir!</p>
+                
+                <div class="flex-row" style="margin-bottom: 10px;">
+                    <div class="kutu">Kripto Fiyatı<br><strong id="fiyat-kripto" style="color:red">0</strong> Kredi</div>
+                    <div class="kutu">Enerji Fiyatı<br><strong id="fiyat-enerji" style="color:red">0</strong> Kredi</div>
+                    <div class="kutu">Kimyasal Fiyatı<br><strong id="fiyat-kimyasal" style="color:red">0</strong> Kredi</div>
+                </div>
+
+                <select id="pazar-urun">
+                    <option value="kripto">Kripto</option>
+                    <option value="enerji">Enerji</option>
+                    <option value="kimyasal">Kimyasal</option>
+                </select>
+                <input type="number" id="pazar-miktar" placeholder="Miktar (Örn: 5)" value="1" min="1">
+                
+                <div class="flex-row">
+                    <button onclick="pazardanAl()">SATIN AL</button>
+                    <button onclick="pazaraSat()" style="background:#440000; border-color:red;">SAT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GİZLİ KAPI -->
+    <div id="surum-bilgisi" onclick="gizliKapiKontrol()">v1.0.0</div>
+
+    <script type="module" src="js/firebase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/market.js"></script>
+</body>
+</html>
