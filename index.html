@@ -20,23 +20,21 @@
             <!-- GİRİŞ FORMU -->
             <div id="form-giris">
                 <h3>Ağa Bağlan</h3>
-                <input type="email" id="login-email" placeholder="E-Posta Adresi">
+                <input type="text" id="login-username" placeholder="Kullanıcı Adı">
                 <input type="password" id="login-pass" placeholder="Şifre">
-                <button type="button" onclick="sistemeGiris()">Sisteme Gir</button>
+                <button type="button" id="giris-btn">Sisteme Gir</button>
             </div>
 
             <!-- KAYIT FORMU -->
             <div id="form-kayit" class="gizli">
                 <h3>Yeni Ajan Kaydı</h3>
-                <input type="text" id="reg-username" placeholder="Kullanıcı Adı (Sistemdeki Adın)">
-                <input type="email" id="reg-email" placeholder="E-Posta Adresi">
-                <input type="password" id="reg-pass" placeholder="Şifre (En az 6 hane)">
+                <input type="text" id="reg-username" placeholder="Kullanıcı Adı">
+                <input type="password" id="reg-pass" placeholder="Şifre">
                 <select id="reg-meslek">
                     <option value="madenci">Veri Madencisi (Kripto Üretir)</option>
                     <option value="teknisyen">Enerji Teknisyeni (Enerji Üretir)</option>
                     <option value="kimyager">Biyokimyager (Kimyasal Üretir)</option>
                 </select>
-                <!-- Butona ID verdik, tıklama sorunu tamamen bitti -->
                 <button type="button" id="kayit-btn" style="background:#004400">Kayıt Ol ve Katıl</button>
             </div>
         </div>
