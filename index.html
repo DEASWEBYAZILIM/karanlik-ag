@@ -22,7 +22,7 @@
                 <h3>Ağa Bağlan</h3>
                 <input type="text" id="login-username" placeholder="Kullanıcı Adı">
                 <input type="password" id="login-pass" placeholder="Şifre">
-                <button type="button" id="giris-btn">Sisteme Gir</button>
+                <button type="button" onclick="sistemeGiris()">Sisteme Gir</button>
             </div>
 
             <!-- KAYIT FORMU -->
@@ -35,7 +35,8 @@
                     <option value="teknisyen">Enerji Teknisyeni (Enerji Üretir)</option>
                     <option value="kimyager">Biyokimyager (Kimyasal Üretir)</option>
                 </select>
-                <button type="button" id="kayit-btn" style="background:#004400">Kayıt Ol ve Katıl</button>
+                <!-- Olay burada: Doğrudan onclick ile fonksiyona bağlıyoruz! -->
+                <button type="button" onclick="sistemeKayit()" style="background:#004400">Kayıt Ol ve Katıl</button>
             </div>
         </div>
 
