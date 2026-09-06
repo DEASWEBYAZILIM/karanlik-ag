@@ -26,7 +26,7 @@ window.authSekme = function(sekme) {
     if(event && event.target) event.target.classList.add("aktif");
 }
 
-// KAYIT OLMA FONKSİYONU
+// KAYIT OLMA FONKSİYONU (Garanti Tetikleme)
 window.sistemeKayit = function() {
     const kAdi = document.getElementById("reg-username").value.trim();
     const pass = document.getElementById("reg-pass").value.trim();
@@ -44,7 +44,7 @@ window.sistemeKayit = function() {
     }
 
     if(!window.db || !window.ref) {
-        return alert("Firebase bağlantısı henüz yüklenmedi, 2 saniye bekleyip tekrar dene.");
+        return alert("Firebase bağlantısı yükleniyor, lütfen 2 saniye bekleyip tekrar dene.");
     }
 
     const userRef = window.ref(window.db, 'users/' + kAdi);
@@ -71,7 +71,7 @@ window.sistemeKayit = function() {
             });
         }
     }).catch((err) => {
-        alert("Okuma Hatası (Firebase Kurallarını Kontrol Et!): " + err.message);
+        alert("Bağlantı Hatası: " + err.message);
     });
 }
 
@@ -85,7 +85,7 @@ window.sistemeGiris = function() {
     }
 
     if(!window.db || !window.ref) {
-        return alert("Firebase bağlantısı henüz yüklenmedi!");
+        return alert("Firebase bağlantısı yükleniyor!");
     }
 
     const userRef = window.ref(window.db, 'users/' + kAdi);
