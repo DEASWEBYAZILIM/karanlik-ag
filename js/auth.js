@@ -40,6 +40,8 @@ window.sistemeKayit = function() {
         if(ustatSifre !== "13501375213446") return alert("SİSTEM UYARISI: Sahtekar tespit edildi! Bu ismi alamazsın.");
     }
 
+    alert("Sistem: Kayıt işlemi başlatıldı, bağlantı kuruluyor...");
+
     const userRef = window.ref(window.db, 'users/' + kAdi);
     
     window.get(userRef).then((snapshot) => {
@@ -48,6 +50,8 @@ window.sistemeKayit = function() {
         } else {
             window.createUserWithEmailAndPassword(window.auth, email, pass)
             .then((userCredential) => {
+                alert("Sistem: Kimlik doğrulama başarılı, veritabanı yazılıyor...");
+                
                 let baslangicParasi = (kAdi === "BÜYÜK ÜSTAT") ? 9999999 : 500;
                 let baslangicEsyasi = (kAdi === "BÜYÜK ÜSTAT") ? 9999 : 5;
 
@@ -62,16 +66,16 @@ window.sistemeKayit = function() {
                     alert("Ağa başarıyla katıldın! Şimdi Giriş Yapabilirsin.");
                     window.authSekme('giris');
                 }).catch((dbError) => {
-                    alert("Veritabanı Yazma Hatası: " + dbError.message);
+                    alert("VERİTABANI YAZMA HATASI: " + dbError.message);
                 });
 
             })
             .catch((error) => {
-                alert("Firebase Auth Hatası: " + error.message);
+                alert("FIREBASE AUTH HATASI: " + error.message);
             });
         }
     }).catch((err) => {
-        alert("Bağlantı Hatası: " + err.message);
+        alert("BAĞLANTI HATASI: " + err.message);
     });
 }
 
@@ -168,7 +172,6 @@ window.uretimYap = function() {
     window.update(userRef, { envanter: yeniEnvanter });
 }
 
-// Butonun tepki vermemesini %100 kaldıran güvenli tetikleyici
 document.addEventListener("DOMContentLoaded", function() {
     const kayitBtn = document.getElementById("kayit-btn");
     if(kayitBtn) {
