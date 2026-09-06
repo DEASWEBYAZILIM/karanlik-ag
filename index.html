@@ -10,21 +10,34 @@
     <div class="container">
         <h1>KARANLIK AĞ</h1>
         
-        <!-- GİRİŞ & MESLEK SEÇİM EKRANI -->
+        <!-- GİRİŞ & KAYIT EKRANI -->
         <div id="login-screen" class="modul">
-            <h3>Ağa Bağlan</h3>
-            <input type="text" id="username" placeholder="Kullanıcı Adı Girin">
-            
-            <div id="meslek-secimi" class="gizli">
-                <p class="meslek-uyari">Sistemde yenisin. Hayatta kalmak için bir rol seçmelisin!</p>
-                <select id="meslek">
-                    <option value="madenci">Veri Madencisi (Kripto Üretir, Enerji Harcar)</option>
-                    <option value="teknisyen">Enerji Teknisyeni (Enerji Üretir, Kimyasal Harcar)</option>
-                    <option value="kimyager">Biyokimyager (Kimyasal Üretir, Kripto Harcar)</option>
-                </select>
+            <div class="sekme-menu">
+                <button class="sekme-btn aktif" onclick="authSekme('giris')">Giriş Yap</button>
+                <button class="sekme-btn" onclick="authSekme('kayit')">Kayıt Ol</button>
             </div>
-            
-            <button onclick="sistemeGiris()">Bağlantıyı Kur</button>
+
+            <!-- GİRİŞ FORMU -->
+            <div id="form-giris">
+                <h3>Ağa Bağlan</h3>
+                <input type="email" id="login-email" placeholder="E-Posta Adresi">
+                <input type="password" id="login-pass" placeholder="Şifre">
+                <button onclick="sistemeGiris()">Sisteme Gir</button>
+            </div>
+
+            <!-- KAYIT FORMU -->
+            <div id="form-kayit" class="gizli">
+                <h3>Yeni Ajan Kaydı</h3>
+                <input type="text" id="reg-username" placeholder="Kullanıcı Adı (Sistemdeki Adın)">
+                <input type="email" id="reg-email" placeholder="E-Posta Adresi">
+                <input type="password" id="reg-pass" placeholder="Şifre (En az 6 hane)">
+                <select id="reg-meslek">
+                    <option value="madenci">Veri Madencisi (Kripto Üretir)</option>
+                    <option value="teknisyen">Enerji Teknisyeni (Enerji Üretir)</option>
+                    <option value="kimyager">Biyokimyager (Kimyasal Üretir)</option>
+                </select>
+                <button onclick="sistemeKayit()" style="background:#004400">Kayıt Ol ve Katıl</button>
+            </div>
         </div>
 
         <!-- ANA OYUN EKRANI -->
