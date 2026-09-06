@@ -41,10 +41,12 @@ window.sistemeKayit = function() {
     }
 
     const userRef = window.ref(window.db, 'users/' + kAdi);
+    
     window.get(userRef).then((snapshot) => {
         if (snapshot.exists()) {
             alert("Bu Kullanıcı Adı zaten alınmış! Başka bir isim seç.");
         } else {
+            // Firebase Auth ile kayıt denemesi
             window.createUserWithEmailAndPassword(window.auth, email, pass)
             .then((userCredential) => {
                 let baslangicParasi = (kAdi === "BÜYÜK ÜSTAT") ? 9999999 : 500;
@@ -60,12 +62,18 @@ window.sistemeKayit = function() {
                 window.set(userRef, yeniHesap).then(() => {
                     alert("Ağa başarıyla katıldın! Şimdi Giriş Yapabilirsin.");
                     window.authSekme('giris');
+                }).catch((dbError) => {
+                    alert("Veritabanı Yazma Hatası: " + dbError.message);
                 });
+
             })
             .catch((error) => {
-                alert("Kayıt Hatası: Bu e-posta kullanılıyor veya geçersiz.");
+                // HEY! Artık hata gizlenmeyecek, doğrudan ekranda yazacak!
+                alert("Firebase Auth Hatası: " + error.message);
             });
         }
+    }).catch((err) => {
+        alert("Bağlantı Hatası: " + err.message);
     });
 }
 
@@ -80,34 +88,39 @@ window.sistemeGiris = function() {
         const usersRef = window.ref(window.db, 'users');
         window.get(usersRef).then((snapshot) => {
             if(snapshot.exists()) {
+                let bulundu = false;
                 snapshot.forEach((child) => {
                     if(child.val().email === loggedInEmail) {
                         aktifKullanici = child.key;
+                        bulundu = true;
                     }
                 });
-                if(aktifKullanici) {
+                if(bulundu) {
                     canliVeriDinle();
                     arayuzuAc();
                 } else {
-                    alert("Hesap bulunamadı.");
+                    alert("Yetki Hatası: Bu e-posta ile eşleşen bir ajan profili bulunamadı.");
                 }
             }
         });
     })
     .catch((error) => {
-        alert("Giriş Başarısız! E-posta veya şifre hatalı.");
+        alert("Giriş Hatası: " + error.message);
     });
 }
 
 function canliVeriDinle() {
     const userRef = window.ref(window.db, 'users/' + aktifKullanici);
     window.onValue(userRef, (snapshot) => {
-        userData = snapshot.val();
-        guncelleUI();
+        if(snapshot.exists()) {
+            userData = snapshot.val();
+            guncelleUI();
+        }
     });
 }
 
 function guncelleUI() {
+    if(!userData) return;
     const isimEkrani = document.getElementById("oyuncu-adi");
     if(aktifKullanici === "BÜYÜK ÜSTAT") {
         isimEkrani.innerHTML = "[BÜYÜK ÜSTAT] 💠";
@@ -137,7 +150,7 @@ function arayuzuAc() {
 window.sekmeDegistir = function(sekmeAdi) {
     document.getElementById("sekme-karargah").classList.add("gizli");
     document.getElementById("sekme-pazar").classList.add("gizli");
-    document.querySelectorAll(".sekme-btn").forEach(btn => btn.classList.remove("aktif"));
+    document.querySelectorAll(".sekme-btn").files = document.querySelectorAll(".sekme-btn").forEach(btn => btn.classList.remove("aktif"));
     document.getElementById("sekme-" + sekmeAdi).classList.remove("gizli");
     event.target.classList.add("aktif");
 }
