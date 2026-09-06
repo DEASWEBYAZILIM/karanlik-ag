@@ -26,21 +26,18 @@ window.authSekme = function(sekme) {
     if(event && event.target) event.target.classList.add("aktif");
 }
 
+// DİREKT VERİTABANI İLE KUSURSUZ KAYIT SİSTEMİ
 window.sistemeKayit = function() {
     const kAdi = document.getElementById("reg-username").value.trim();
-    const email = document.getElementById("reg-email").value.trim();
     const pass = document.getElementById("reg-pass").value.trim();
     const meslek = document.getElementById("reg-meslek").value;
 
-    if(kAdi === "" || email === "" || pass === "") return alert("Tüm alanları doldurmalısın!");
-    if(pass.length < 6) return alert("Şifre en az 6 haneli olmalıdır.");
+    if(kAdi === "" || pass === "") return alert("Kullanıcı adı ve şifre boş olamaz!");
 
     if(kAdi === "BÜYÜK ÜSTAT") {
         let ustatSifre = prompt("Üstat, kurucu olduğunu doğrula (Özel Şifre):");
-        if(ustatSifre !== "13501375213446") return alert("SİSTEM UYARISI: Sahtekar tespit edildi! Bu ismi alamazsın.");
+        if(ustatSifre !== "13501375213446") return alert("SİSTEM UYARISI: Sahtekar tespit edildi!");
     }
-
-    alert("Sistem: Kayıt işlemi başlatıldı, bağlantı kuruluyor...");
 
     const userRef = window.ref(window.db, 'users/' + kAdi);
     
@@ -48,66 +45,49 @@ window.sistemeKayit = function() {
         if (snapshot.exists()) {
             alert("Bu Kullanıcı Adı zaten alınmış! Başka bir isim seç.");
         } else {
-            window.createUserWithEmailAndPassword(window.auth, email, pass)
-            .then((userCredential) => {
-                alert("Sistem: Kimlik doğrulama başarılı, veritabanı yazılıyor...");
-                
-                let baslangicParasi = (kAdi === "BÜYÜK ÜSTAT") ? 9999999 : 500;
-                let baslangicEsyasi = (kAdi === "BÜYÜK ÜSTAT") ? 9999 : 5;
+            let baslangicParasi = (kAdi === "BÜYÜK ÜSTAT") ? 9999999 : 500;
+            let baslangicEsyasi = (kAdi === "BÜYÜK ÜSTAT") ? 9999 : 5;
 
-                const yeniHesap = {
-                    email: email,
-                    bakiye: baslangicParasi, 
-                    meslek: meslek,
-                    envanter: { kripto: baslangicEsyasi, enerji: baslangicEsyasi, kimyasal: baslangicEsyasi }
-                };
-                
-                window.set(userRef, yeniHesap).then(() => {
-                    alert("Ağa başarıyla katıldın! Şimdi Giriş Yapabilirsin.");
-                    window.authSekme('giris');
-                }).catch((dbError) => {
-                    alert("VERİTABANI YAZMA HATASI: " + dbError.message);
-                });
-
-            })
-            .catch((error) => {
-                alert("FIREBASE AUTH HATASI: " + error.message);
+            const yeniHesap = {
+                sifre: pass,
+                bakiye: baslangicParasi, 
+                meslek: meslek,
+                envanter: { kripto: baslangicEsyasi, enerji: baslangicEsyasi, kimyasal: baslangicEsyasi }
+            };
+            
+            window.set(userRef, yeniHesap).then(() => {
+                alert("Ağa başarıyla katıldın! Şimdi Giriş Yapabilirsin.");
+                window.authSekme('giris');
+            }).catch((err) => {
+                alert("Kayıt Hatası: " + err.message);
             });
         }
-    }).catch((err) => {
-        alert("BAĞLANTI HATASI: " + err.message);
     });
 }
 
+// DİREKT VERİTABANI İLE KUSURSUZ GİRİŞ SİSTEMİ
 window.sistemeGiris = function() {
-    const email = document.getElementById("login-email").value.trim();
+    const kAdi = document.getElementById("login-username").value.trim();
     const pass = document.getElementById("login-pass").value.trim();
-    if(email === "" || pass === "") return alert("E-posta ve şifre girmelisin!");
+    
+    if(kAdi === "" || pass === "") return alert("Kullanıcı adı ve şifre girmelisin!");
 
-    window.signInWithEmailAndPassword(window.auth, email, pass)
-    .then((userCredential) => {
-        const loggedInEmail = userCredential.user.email;
-        const usersRef = window.ref(window.db, 'users');
-        window.get(usersRef).then((snapshot) => {
-            if(snapshot.exists()) {
-                let bulundu = false;
-                snapshot.forEach((child) => {
-                    if(child.val().email === loggedInEmail) {
-                        aktifKullanici = child.key;
-                        bulundu = true;
-                    }
-                });
-                if(bulundu) {
-                    canliVeriDinle();
-                    arayuzuAc();
-                } else {
-                    alert("Yetki Hatası: Bu e-posta ile eşleşen ajan profili yok.");
-                }
+    const userRef = window.ref(window.db, 'users/' + kAdi);
+    window.get(userRef).then((snapshot) => {
+        if(snapshot.exists()) {
+            const veri = snapshot.val();
+            if(veri.sifre === pass) {
+                aktifKullanici = kAdi;
+                canliVeriDinle();
+                arayuzuAc();
+            } else {
+                alert("Hatalı şifre!");
             }
-        });
-    })
-    .catch((error) => {
-        alert("Giriş Hatası: " + error.message);
+        } else {
+            alert("Böyle bir ajan bulunamadı!");
+        }
+    }).catch((err) => {
+        alert("Giriş Hatası: " + err.message);
     });
 }
 
@@ -172,11 +152,18 @@ window.uretimYap = function() {
     window.update(userRef, { envanter: yeniEnvanter });
 }
 
+// Buton dinleyicileri
 document.addEventListener("DOMContentLoaded", function() {
     const kayitBtn = document.getElementById("kayit-btn");
     if(kayitBtn) {
         kayitBtn.addEventListener("click", function() {
             window.sistemeKayit();
+        });
+    }
+    const girisBtn = document.getElementById("giris-btn");
+    if(girisBtn) {
+        girisBtn.addEventListener("click", function() {
+            window.sistemeGiris();
         });
     }
 });
