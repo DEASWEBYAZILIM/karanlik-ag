@@ -26,95 +26,85 @@ window.authSekme = function(sekme) {
     if(event && event.target) event.target.classList.add("aktif");
 }
 
-// KAYIT OLMA FONKSİYONU (Hata yakalayıcılı)
+// KAYIT OLMA FONKSİYONU
 window.sistemeKayit = function() {
-    try {
-        const kAdi = document.getElementById("reg-username").value.trim();
-        const pass = document.getElementById("reg-pass").value.trim();
-        const meslek = document.getElementById("reg-meslek").value;
+    const kAdi = document.getElementById("reg-username").value.trim();
+    const pass = document.getElementById("reg-pass").value.trim();
+    const meslek = document.getElementById("reg-meslek").value;
 
-        if(kAdi === "" || pass === "") {
-            return alert("Kullanıcı adı ve şifre boş olamaz!");
-        }
-
-        if(kAdi === "BÜYÜK ÜSTAT") {
-            let ustatSifre = prompt("Üstat, kurucu olduğunu doğrula (Özel Şifre):");
-            if(ustatSifre !== "13501375213446") {
-                return alert("SİSTEM UYARISI: Sahtekar tespit edildi!");
-            }
-        }
-
-        if(!window.db || !window.ref) {
-            return alert("Kritik Hata: Firebase veritabanı henüz yüklenemedi! Sayfayı yenile.");
-        }
-
-        const userRef = window.ref(window.db, 'users/' + kAdi);
-        
-        window.get(userRef).then((snapshot) => {
-            if (snapshot.exists()) {
-                alert("Bu Kullanıcı Adı zaten alınmış! Başka bir isim seç.");
-            } else {
-                let baslangicParasi = (kAdi === "BÜYÜK ÜSTAT") ? 9999999 : 500;
-                let baslangicEsyasi = (kAdi === "BÜYÜK ÜSTAT") ? 9999 : 5;
-
-                const yeniHesap = {
-                    sifre: pass,
-                    bakiye: baslangicParasi, 
-                    meslek: meslek,
-                    envanter: { kripto: baslangicEsyasi, enerji: baslangicEsyasi, kimyasal: baslangicEsyasi }
-                };
-                
-                window.set(userRef, yeniHesap).then(() => {
-                    alert("Ağa başarıyla katıldın! Şimdi Giriş Yapabilirsin.");
-                    window.authSekme('giris');
-                }).catch((err) => {
-                    alert("Veritabanına Yazma Hatası: " + err.message);
-                });
-            }
-        }).catch((err) => {
-            alert("Veritabanı Okuma Hatası (Firebase Kurallarını Kontrol Et!): " + err.message);
-        });
-
-    } catch (ex) {
-        alert("Kod Çalışma Hatası: " + ex.message);
+    if(kAdi === "" || pass === "") {
+        return alert("Kullanıcı adı ve şifre boş olamaz!");
     }
+
+    if(kAdi === "BÜYÜK ÜSTAT") {
+        let ustatSifre = prompt("Üstat, kurucu olduğunu doğrula (Özel Şifre):");
+        if(ustatSifre !== "13501375213446") {
+            return alert("SİSTEM UYARISI: Sahtekar tespit edildi!");
+        }
+    }
+
+    if(!window.db || !window.ref) {
+        return alert("Firebase bağlantısı henüz yüklenmedi, 2 saniye bekleyip tekrar dene.");
+    }
+
+    const userRef = window.ref(window.db, 'users/' + kAdi);
+    
+    window.get(userRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            alert("Bu Kullanıcı Adı zaten alınmış! Başka bir isim seç.");
+        } else {
+            let baslangicParasi = (kAdi === "BÜYÜK ÜSTAT") ? 9999999 : 500;
+            let baslangicEsyasi = (kAdi === "BÜYÜK ÜSTAT") ? 9999 : 5;
+
+            const yeniHesap = {
+                sifre: pass,
+                bakiye: baslangicParasi, 
+                meslek: meslek,
+                envanter: { kripto: baslangicEsyasi, enerji: baslangicEsyasi, kimyasal: baslangicEsyasi }
+            };
+            
+            window.set(userRef, yeniHesap).then(() => {
+                alert("Ağa başarıyla katıldın! Şimdi Giriş Yapabilirsin.");
+                window.authSekme('giris');
+            }).catch((err) => {
+                alert("Yazma Hatası: " + err.message);
+            });
+        }
+    }).catch((err) => {
+        alert("Okuma Hatası (Firebase Kurallarını Kontrol Et!): " + err.message);
+    });
 }
 
 // GİRİŞ YAPMA FONKSİYONU
 window.sistemeGiris = function() {
-    try {
-        const kAdi = document.getElementById("login-username").value.trim();
-        const pass = document.getElementById("login-pass").value.trim();
-        
-        if(kAdi === "" || pass === "") {
-            return alert("Kullanıcı adı ve şifre girmelisin!");
-        }
-
-        if(!window.db || !window.ref) {
-            return alert("Kritik Hata: Firebase veritabanı yüklenemedi!");
-        }
-
-        const userRef = window.ref(window.db, 'users/' + kAdi);
-        window.get(userRef).then((snapshot) => {
-            if(snapshot.exists()) {
-                const veri = snapshot.val();
-                if(veri.sifre === pass) {
-                    aktifKullanici = kAdi;
-                    canliVeriDinle();
-                    arayuzuAc();
-                } else {
-                    alert("Hatalı şifre!");
-                }
-            } else {
-                alert("Böyle bir ajan bulunamadı! Önce Kayıt Olmalısın.");
-            }
-        }).catch((err) => {
-            alert("Giriş Bağlantı Hatası: " + err.message);
-        });
-
-    } catch (ex) {
-        alert("Giriş Kod Hatası: " + ex.message);
+    const kAdi = document.getElementById("login-username").value.trim();
+    const pass = document.getElementById("login-pass").value.trim();
+    
+    if(kAdi === "" || pass === "") {
+        return alert("Kullanıcı adı ve şifre girmelisin!");
     }
+
+    if(!window.db || !window.ref) {
+        return alert("Firebase bağlantısı henüz yüklenmedi!");
+    }
+
+    const userRef = window.ref(window.db, 'users/' + kAdi);
+    window.get(userRef).then((snapshot) => {
+        if(snapshot.exists()) {
+            const veri = snapshot.val();
+            if(veri.sifre === pass) {
+                aktifKullanici = kAdi;
+                canliVeriDinle();
+                arayuzuAc();
+            } else {
+                alert("Hatalı şifre!");
+            }
+        } else {
+            alert("Böyle bir ajan bulunamadı! Önce Kayıt Olmalısın.");
+        }
+    }).catch((err) => {
+        alert("Giriş Hatası: " + err.message);
+    });
 }
 
 function canliVeriDinle() {
@@ -177,21 +167,3 @@ window.uretimYap = function() {
     yeniEnvanter[uUrun] += uMik;
     window.update(userRef, { envanter: yeniEnvanter });
 }
-
-// Butonları garanti altına alan dinleyici
-document.addEventListener("DOMContentLoaded", function() {
-    const kayitBtn = document.getElementById("kayit-btn");
-    if(kayitBtn) {
-        kayitBtn.addEventListener("click", function(e) {
-            e.preventDefault();
-            window.sistemeKayit();
-        });
-    }
-    const girisBtn = document.getElementById("giris-btn");
-    if(girisBtn) {
-        girisBtn.addEventListener("click", function(e) {
-            e.preventDefault();
-            window.sistemeGiris();
-        });
-    }
-});
