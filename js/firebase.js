@@ -1,6 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getDatabase, ref, set, get, update, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyASJQvP128UQU3XgTRwmq4QkhZbc5mTeHU",
@@ -13,7 +12,5 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const auth = getAuth(app);
 
-window.db = db; window.ref = ref; window.set = set; window.get = get; window.update = update; window.onValue = onValue; window.runTransaction = runTransaction;
-window.auth = auth; window.createUserWithEmailAndPassword = createUserWithEmailAndPassword; window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+window.db = db; window.ref = ref; window.set = set; window.get = get; window.update = update; window.onValue = onValue;
