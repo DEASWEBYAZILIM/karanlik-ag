@@ -13,4 +13,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-window.db = db; window.ref = ref; window.set = set; window.get = get; window.update = update; window.onValue = onValue;
+window.db = db; 
+window.ref = ref; 
+window.set = set; 
+window.get = get; 
+window.update = update; 
+window.onValue = onValue;
