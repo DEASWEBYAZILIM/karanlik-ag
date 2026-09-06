@@ -1,1 +1,20 @@
-test
+
+body { background-color: #050505; color: #00ff00; font-family: 'Courier New', Courier, monospace; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+.container { width: 100%; max-width: 800px; border: 1px solid #113311; padding: 20px; box-shadow: 0 0 20px rgba(0, 255, 0, 0.1); background: #0a0a0a; }
+h1, h2, h3 { color: #00ffcc; text-align: center; border-bottom: 1px solid #113311; padding-bottom: 10px; }
+.modul { border: 1px solid #004400; padding: 15px; margin-bottom: 15px; background: #020a02; }
+.flex-row { display: flex; justify-content: space-between; gap: 10px; }
+.kutu { flex: 1; border: 1px solid #003300; padding: 10px; text-align: center; background: #000; }
+.buyuk-ustat { color: #ffd700; font-weight: bold; text-shadow: 0 0 10px #ffaa00; font-size: 1.2em; }
+input, select { background: #000; color: #00ff00; border: 1px solid #005500; padding: 10px; width: 100%; margin-bottom: 10px; box-sizing: border-box; font-family: inherit; }
+button { background-color: #002200; color: #00ff00; border: 1px solid #00ff00; padding: 10px; cursor: pointer; width: 100%; transition: 0.3s; font-family: inherit; font-weight: bold; margin-bottom: 5px; }
+button:hover { background-color: #00ff00; color: #000; box-shadow: 0 0 15px #00ff00; }
+.btn-red { border-color: #ff0000; color: #ff0000; background: #220000; }
+.btn-red:hover { background: #ff0000; color: #fff; box-shadow: 0 0 15px red; }
+.gizli { display: none !important; }
+.meslek-uyari { color: #ffaa00; font-size: 0.9em; text-align: center; }
+#surum-bilgisi { position: fixed; bottom: 5px; right: 5px; font-size: 10px; color: #111; cursor: pointer; user-select: none; }
+/* Sekme (Tab) Menüsü */
+.sekme-menu { display: flex; gap: 5px; margin-bottom: 15px; }
+.sekme-btn { background: #001100; border-bottom: none; opacity: 0.6; }
+.sekme-btn.aktif { background: #003300; opacity: 1; border: 1px solid #00ff00; border-bottom: 2px solid #00ff00; }
