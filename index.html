@@ -13,8 +13,8 @@
         <!-- GİRİŞ & KAYIT EKRANI -->
         <div id="login-screen" class="modul">
             <div class="sekme-menu">
-                <button class="sekme-btn aktif" onclick="authSekme('giris')">Giriş Yap</button>
-                <button class="sekme-btn" onclick="authSekme('kayit')">Kayıt Ol</button>
+                <button type="button" class="sekme-btn aktif" onclick="authSekme('giris')">Giriş Yap</button>
+                <button type="button" class="sekme-btn" onclick="authSekme('kayit')">Kayıt Ol</button>
             </div>
 
             <!-- GİRİŞ FORMU -->
@@ -22,7 +22,7 @@
                 <h3>Ağa Bağlan</h3>
                 <input type="email" id="login-email" placeholder="E-Posta Adresi">
                 <input type="password" id="login-pass" placeholder="Şifre">
-                <button onclick="sistemeGiris()">Sisteme Gir</button>
+                <button type="button" onclick="sistemeGiris()">Sisteme Gir</button>
             </div>
 
             <!-- KAYIT FORMU -->
@@ -36,15 +36,16 @@
                     <option value="teknisyen">Enerji Teknisyeni (Enerji Üretir)</option>
                     <option value="kimyager">Biyokimyager (Kimyasal Üretir)</option>
                 </select>
-                <button onclick="sistemeKayit()" style="background:#004400">Kayıt Ol ve Katıl</button>
+                <!-- Butona ID verdik, tıklama sorunu tamamen bitti -->
+                <button type="button" id="kayit-btn" style="background:#004400">Kayıt Ol ve Katıl</button>
             </div>
         </div>
 
         <!-- ANA OYUN EKRANI -->
         <div id="game-screen" class="gizli">
             <div class="sekme-menu">
-                <button class="sekme-btn aktif" onclick="sekmeDegistir('karargah')">Karargah (Üretim)</button>
-                <button class="sekme-btn" onclick="sekmeDegistir('pazar')">Karaborsa (Ticaret)</button>
+                <button type="button" class="sekme-btn aktif" onclick="sekmeDegistir('karargah')">Karargah (Üretim)</button>
+                <button type="button" class="sekme-btn" onclick="sekmeDegistir('pazar')">Karaborsa (Ticaret)</button>
             </div>
 
             <!-- KARARGAH SEKMESİ -->
@@ -62,7 +63,7 @@
 
                 <h3>Üretim Tesisi</h3>
                 <p id="uretim-bilgi" class="meslek-uyari">...</p>
-                <button onclick="uretimYap()">ÜRETİMİ BAŞLAT</button>
+                <button type="button" onclick="uretimYap()">ÜRETİMİ BAŞLAT</button>
             </div>
 
             <!-- PAZAR SEKMESİ -->
@@ -84,8 +85,8 @@
                 <input type="number" id="pazar-miktar" placeholder="Miktar (Örn: 5)" value="1" min="1">
                 
                 <div class="flex-row">
-                    <button onclick="pazardanAl()">SATIN AL</button>
-                    <button onclick="pazaraSat()" style="background:#440000; border-color:red;">SAT</button>
+                    <button type="button" onclick="pazardanAl()">SATIN AL</button>
+                    <button type="button" onclick="pazaraSat()" style="background:#440000; border-color:red;">SAT</button>
                 </div>
             </div>
         </div>
